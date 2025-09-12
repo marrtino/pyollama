@@ -15,7 +15,7 @@ LOG_PATH = os.path.join(PATH, "log")
 os.makedirs(LOG_PATH, exist_ok=True)
 
 # Inizializza Ollama
-ollama_client = Client(host='http://localhost:11434')
+ollama_client = Client(host='http://192.168.1.9:11434')
 
 # Funzioni di utilità
 def log_to_file(question, bot_answer):
@@ -81,7 +81,7 @@ PROMPT_SYSTEM = (
 @app.route("/")
 def home():
     try:
-        response = requests.get("http://localhost:11434/api/tags")
+        response = requests.get("http://192.168.1.9:11434/api/tags")
         model_list = response.json().get("models", [])
         model_names = [model["name"] for model in model_list]
         print(f"[DEBUG] Modelli disponibili: {model_names}", file=sys.stderr)

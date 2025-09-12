@@ -12,7 +12,8 @@ pip3 --version
 @ installazione librerie
 pip3 install -r requirements.txt
 
-
+# Disattivazione 
+deactivate
 # requirement
 Flask
 openai
