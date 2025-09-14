@@ -1,3 +1,9 @@
+# install ollama
+curl -fsSL https://ollama.com/install.sh | sh
+
+ollama pull gemma3:4b
+
+
 # marrtino_chatbot
 
 sudo apt install python3.12-venv

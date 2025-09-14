@@ -15,7 +15,7 @@ LOG_PATH = os.path.join(PATH, "log")
 os.makedirs(LOG_PATH, exist_ok=True)
 
 # Inizializza Ollama
-ollama_client = Client(host='http://192.168.1.9:11434')
+ollama_client = Client(host='http://localhost:11434')
 
 # Funzioni di utilità
 def log_to_file(question, bot_answer):
@@ -47,7 +47,7 @@ def send_to_ros2(text, url="http://localhost:5001/send"):
         print(f"[DEBUG] ❌ Errore nell'invio al nodo ROS: {e}", file=sys.stderr)
 
 
-def get_response(messages: list, model_name="gemma:2b"):
+def get_response(messages: list, model_name="gemma3:4b"):
     print(f"[DEBUG] Messaggi inviati al modello ({model_name}): {messages}", file=sys.stderr)
     try:
         start_time = time()
@@ -81,7 +81,7 @@ PROMPT_SYSTEM = (
 @app.route("/")
 def home():
     try:
-        response = requests.get("http://192.168.1.9:11434/api/tags")
+        response = requests.get("http://localhost:11434/api/tags")
         model_list = response.json().get("models", [])
         model_names = [model["name"] for model in model_list]
         print(f"[DEBUG] Modelli disponibili: {model_names}", file=sys.stderr)
@@ -95,7 +95,7 @@ def home():
 @app.route("/get")
 def get_bot_response():
     myquery = request.args.get('msg')
-    model_name = request.args.get('model', "gemma:2b")
+    model_name = request.args.get('model', "gemma3:4b")
     print(f"[DEBUG] Messaggio ricevuto dal client: {myquery}", file=sys.stderr)
     print(f"[DEBUG] Modello selezionato: {model_name}", file=sys.stderr)
     messages = [
@@ -110,7 +110,7 @@ def get_bot_response():
 @app.route('/bot')
 def bot():
     myquery = request.args.get('query')
-    model_name = request.args.get('model', "gemma:2b")
+    model_name = request.args.get('model', "gemma3:4b")
     print(f"[DEBUG] Richiesta /bot ricevuta: {myquery}", file=sys.stderr)
     print(f"[DEBUG] Modello selezionato: {model_name}", file=sys.stderr)
     messages = [
@@ -127,7 +127,7 @@ def bot():
 @app.route('/json')
 def json_response():
     myquery = request.args.get('query')
-    model_name = request.args.get('model', "gemma:2b")
+    model_name = request.args.get('model', "gemma3:4b")
     print(f"[DEBUG] Richiesta /json ricevuta: {myquery}", file=sys.stderr)
     print(f"[DEBUG] Modello selezionato: {model_name}", file=sys.stderr)
     messages = [
@@ -145,4 +145,4 @@ def json_response():
 if __name__ == '__main__':
     print("ChatBot with Ollama v.1.01")
     myip = '0.0.0.0'
-    app.run(host=myip, debug=True, port=5000)
+    app.run(host=myip, debug=True, port=8060)
